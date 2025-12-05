@@ -1,10 +1,1 @@
-import express from 'express'
-
-const app = express()
-app.use(express.json())
-
-app.get('/health', (req, res) => res.json({ok: true}))
-
-app.listen(4000, () => {
-  console.log('Backend listening on http://localhost:4000')
-})
+import express from 'express'\nimport dotenv from 'dotenv'\nimport referralRoutes from './routes/referralRoutes'\nimport paymentRoutes from './routes/paymentRoutes'\n\ndotenv.config()\nconst app = express()\napp.use(express.json())\n\n// For Stripe webhook route we use raw parser inside route\napp.use('/referral', referralRoutes)\napp.use('/payments', paymentRoutes)\n\napp.get('/health', (req, res) => res.json({ ok: true }))\n\nconst port = process.env.PORT || 4000\napplisten(port, () => {\n  console.log(`Backend listening on http://localhost:${port}`)\n})\n
